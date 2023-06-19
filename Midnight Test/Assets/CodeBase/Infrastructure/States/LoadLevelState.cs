@@ -1,6 +1,6 @@
-using Infrastructure.AssetProviderService;
+using Infrastructure.Factories.GameFactoryFolder;
+using Infrastructure.Factories.PlayerFactoryFolder;
 using Infrastructure.Services.SaveLoad;
-using Infrastructure.Services.StaticDataService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,29 +8,26 @@ namespace Infrastructure.States
 {
     public class LoadLevelState : IPayloadedState<string>
     {
+        private const string InitialPointTag = "InitialPoint";
+        
         private readonly ISaveLoadService _saveLoadService;
         private readonly IGameStateMachine _gameStateMachine;
+        private readonly IPlayerFactory _playerFactory;
         private readonly SceneLoader _sceneLoader;
-        private readonly IStaticDataService _staticData;
-        private readonly IAssets _assetProvider;
-        private readonly ICoroutineRunner _coroutineRunner;
 
         private Vector3 _initialPoint;
 
         public LoadLevelState(
             IGameStateMachine gameStateMachine,
             ISaveLoadService saveLoadService,
-            SceneLoader sceneLoader,
-            ICoroutineRunner coroutineRunner,
-            IAssets assets, 
-            IStaticDataService staticDataService)
+            IGameFactory gameFactory,
+            SceneLoader sceneLoader)
         {
             _gameStateMachine = gameStateMachine;
             _saveLoadService = saveLoadService;
             _sceneLoader = sceneLoader;
-            _coroutineRunner = coroutineRunner;
-            _assetProvider = assets;
-            _staticData = staticDataService;
+
+            _playerFactory = gameFactory.PlayerFactory;
         }
         public void Enter(string sceneName)
         {
@@ -51,6 +48,9 @@ namespace Infrastructure.States
 
         private void OnLoaded()
         {
+            Vector3 initialPoint = GameObject.FindGameObjectWithTag(InitialPointTag).transform.position;
+            _playerFactory.CreatePlayer(initialPoint);
+            
             _saveLoadService.InformReaders();
             _gameStateMachine.Enter<GameLoopState>();
         }

@@ -1,14 +1,11 @@
-﻿using Infrastructure.Data;
-using Infrastructure.Data.CameraData;
-using Infrastructure.Data.UIData;
+﻿using Infrastructure.Data.CameraData;
+using Infrastructure.StaticData;
 
 namespace Infrastructure.Services.StaticDataService
 {
     public interface IStaticDataService : IService
     {
-        BlockStaticData BlockData { get; }
         CameraStaticData CameraData { get; }
-        ColorStaticData ColorData { get; }
-        UIStaticData UIData { get; }
+        PlayerStaticData PlayerData { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Infrastructure.AssetProviderService;
+using Infrastructure.Factories.GameFactoryFolder;
 using Infrastructure.Services;
 using Infrastructure.Services.Input;
 using Infrastructure.Services.PersistentProgress;
@@ -34,18 +34,14 @@ namespace Infrastructure.States
                 [typeof(BootstrapState)] = new BootstrapState(
                     this, sceneLoader, services, coroutineRunner, ticker),
                 [typeof(LoadLevelState)] = new LoadLevelState(
-                    this , services.Single<ISaveLoadService>(), sceneLoader,
-                    coroutineRunner, services.Single<IAssets>(),
-                    services.Single<IStaticDataService>()),
+                    this , services.Single<ISaveLoadService>(), services.Single<IGameFactory>(), sceneLoader),
                 [typeof(LoadProgressState)] = new LoadProgressState(
                     this, services.Single<IPersistentProgressService>(), 
                     services.Single<ISaveLoadService>()),
                 [typeof(GameLoopState)] = new GameLoopState(
                     coroutineRunner, services.Single<IInputService>()),
                 [typeof(GameLostState)] = new GameLostState(
-                    this,
-                    services.Single<IInputService>(), 
-                    coroutineRunner)
+                    this, services.Single<IInputService>(), coroutineRunner)
             };
         }
 

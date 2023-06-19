@@ -1,7 +1,11 @@
+using UnityEngine;
+
 namespace Infrastructure.Services.Input
 {
     public interface IInputService : IService
     {
-        bool Tap();
+        Vector2 GetDirection();
+        bool Jump();
+        bool Run();
     }
 }

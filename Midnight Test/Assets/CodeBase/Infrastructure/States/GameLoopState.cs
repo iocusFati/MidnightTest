@@ -19,12 +19,7 @@ namespace Infrastructure.States
 
         public void Enter()
         {
-            _coroutineRunner.DoAfter(() => _inputService.Tap(), StartPlaying);
-        }
-
-        private void StartPlaying()
-        {
-            IsPlaying = true;
+            
         }
 
         public void Exit()

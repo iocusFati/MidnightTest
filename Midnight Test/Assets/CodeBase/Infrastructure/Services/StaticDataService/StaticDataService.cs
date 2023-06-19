@@ -2,34 +2,26 @@
 using Infrastructure.Data;
 using Infrastructure.Data.CameraData;
 using Infrastructure.Data.UIData;
+using Infrastructure.StaticData;
 using UnityEngine;
 
 namespace Infrastructure.Services.StaticDataService
 {
     public class StaticDataService : IStaticDataService
     {
-        public BlockStaticData BlockData { get; private set; }
         public CameraStaticData CameraData { get; private set; }
-        public ColorStaticData ColorData { get; private set; }
-        public UIStaticData UIData { get; private set; }
+        public PlayerStaticData PlayerData { get; set; }
 
         public void Initialize()
         {
-            LoadBlockData();
             LoadCameraData();
-            LoadColorData();
-            LoadUIData();
+            LoadPlayerData();
         }
 
-        private void LoadBlockData() => 
-            BlockData = Resources.Load<BlockStaticData>(AssetPaths.BlockData);
+        private void LoadPlayerData() => 
+            PlayerData = Resources.Load<PlayerStaticData>(AssetPaths.PlayerData);
 
         private void LoadCameraData() => 
             CameraData = Resources.Load<CameraStaticData>(AssetPaths.CameraData);
-
-        private void LoadColorData() => 
-            ColorData = Resources.Load<ColorStaticData>(AssetPaths.ColorData);
-        private void LoadUIData() => 
-            UIData = Resources.Load<UIStaticData>(AssetPaths.UIData);
     }
 }

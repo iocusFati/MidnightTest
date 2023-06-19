@@ -1,5 +1,4 @@
 ﻿using Infrastructure.Services.Input;
-using UnityEngine.SceneManagement;
 
 namespace Infrastructure.States
 {
@@ -8,7 +7,10 @@ namespace Infrastructure.States
         private readonly IGameStateMachine _gameStateMachine;
         private readonly IInputService _inputService;
         private readonly ICoroutineRunner _coroutineRunner;
-
+        
+        private readonly float _timeBeforeLose;
+        private readonly float _cameraRotateDuration;
+        
         public GameLostState(
             IGameStateMachine gameStateMachine,
             IInputService inputService,
@@ -25,11 +27,6 @@ namespace Infrastructure.States
 
         public void Exit()
         {
-        }
-        
-        private void RestartGame()
-        {
-            _gameStateMachine.Enter<LoadLevelState, string>(SceneManager.GetActiveScene().name);
         }
     }
 }

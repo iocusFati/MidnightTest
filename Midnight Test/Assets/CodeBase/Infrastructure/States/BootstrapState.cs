@@ -1,4 +1,5 @@
 using Infrastructure.AssetProviderService;
+using Infrastructure.Factories.GameFactoryFolder;
 using Infrastructure.Services;
 using Infrastructure.Services.Input;
 using Infrastructure.Services.PersistentProgress;
@@ -56,7 +57,12 @@ namespace Infrastructure.States
             var assets = services.RegisterService<IAssets>(
                 new AssetProvider());
             var inputService = services.RegisterService<IInputService>(
-                InputService());
+                new InputService());
+
+            GameFactory gameFactory = (GameFactory)services.RegisterService<IGameFactory>(
+                new GameFactory(assets, inputService, staticData, _ticker));
+            gameFactory.Initialize();
+            
             var persistentProgress = services.RegisterService<IPersistentProgressService>(
                 new PersistentProgressService());
             var saveLoad = services.RegisterService <ISaveLoadService>(
@@ -70,10 +76,5 @@ namespace Infrastructure.States
             
             return services.RegisterService<IStaticDataService>(staticDataService);
         }
-        
-        private IInputService InputService() =>
-            Application.isEditor
-                ? new StandaloneInput()
-                : new MobileInput();
     }
 }
