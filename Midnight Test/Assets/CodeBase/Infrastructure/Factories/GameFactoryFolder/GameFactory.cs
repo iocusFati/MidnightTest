@@ -1,6 +1,6 @@
 using Infrastructure.AssetProviderService;
+using Infrastructure.Factories.CameraFactoryFolder;
 using Infrastructure.Factories.PlayerFactoryFolder;
-using Infrastructure.Services;
 using Infrastructure.Services.Input;
 using Infrastructure.Services.StaticDataService;
 
@@ -9,11 +9,12 @@ namespace Infrastructure.Factories.GameFactoryFolder
     public class GameFactory : IGameFactory
     {
         private readonly IAssets _assets;
-        private IInputService _inputService;
+        private readonly IInputService _inputService;
         private readonly ITicker _ticker;
-        private IStaticDataService _staticData;
-        public IPlayerFactory PlayerFactory { get; set; }
-
+        private readonly IStaticDataService _staticData;
+        public IPlayerFactory PlayerFactory { get; private  set; }
+        public CameraFactory CameraFactory { get; private set; }
+        
         public GameFactory(IAssets assets, IInputService inputService, IStaticDataService staticData, ITicker ticker)
         {
             _assets = assets;
@@ -25,11 +26,13 @@ namespace Infrastructure.Factories.GameFactoryFolder
         public void Initialize()
         {
             InitializePlayerFactory();
+            InitializeCameraFactory();
         }
 
-        private void InitializePlayerFactory()
-        {
-            PlayerFactory = new PlayerFactory(_assets, _inputService, _staticData, _ticker);
-        }
+        private void InitializeCameraFactory() => 
+            CameraFactory = new CameraFactory(_assets, PlayerFactory);
+
+        private void InitializePlayerFactory() => 
+            PlayerFactory = new PlayerFactory(_assets, _inputService, _staticData, _ticker, this);
     }
 }

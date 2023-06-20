@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Infrastructure.Services.Input
 {
@@ -7,12 +8,18 @@ namespace Infrastructure.Services.Input
         private readonly PlayerControls _playerControls;
         private readonly PlayerControls.PlayerActions _playerActions;
 
+        public event Action OnAim;
+        public event Action OnRepositionCrosshairs;
+
         public InputService()
         {
             _playerControls = new PlayerControls();
             _playerControls.Enable();
             
             _playerActions = _playerControls.Player;
+
+            _playerActions.Aim.performed += _ => OnAim?.Invoke();
+            _playerActions.Aim.canceled += _ => OnRepositionCrosshairs?.Invoke();
         }
 
         public Vector2 GetDirection() => 

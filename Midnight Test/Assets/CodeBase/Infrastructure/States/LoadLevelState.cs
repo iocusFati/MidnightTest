@@ -1,3 +1,5 @@
+using Cinemachine;
+using Infrastructure.Factories.CameraFactoryFolder;
 using Infrastructure.Factories.GameFactoryFolder;
 using Infrastructure.Factories.PlayerFactoryFolder;
 using Infrastructure.Services.SaveLoad;
@@ -13,6 +15,7 @@ namespace Infrastructure.States
         private readonly ISaveLoadService _saveLoadService;
         private readonly IGameStateMachine _gameStateMachine;
         private readonly IPlayerFactory _playerFactory;
+        private readonly ICameraFactory _cameraFactory;
         private readonly SceneLoader _sceneLoader;
 
         private Vector3 _initialPoint;
@@ -28,6 +31,7 @@ namespace Infrastructure.States
             _sceneLoader = sceneLoader;
 
             _playerFactory = gameFactory.PlayerFactory;
+            _cameraFactory = gameFactory.CameraFactory;
         }
         public void Enter(string sceneName)
         {
@@ -48,11 +52,25 @@ namespace Infrastructure.States
 
         private void OnLoaded()
         {
-            Vector3 initialPoint = GameObject.FindGameObjectWithTag(InitialPointTag).transform.position;
-            _playerFactory.CreatePlayer(initialPoint);
-            
+            CreatePlayer();
+            CreateCameras();
+
             _saveLoadService.InformReaders();
             _gameStateMachine.Enter<GameLoopState>();
+        }
+
+        private void CreateCameras()
+        {
+            CinemachineVirtualCamera mainCamera = _cameraFactory.CreateMainCamera();
+            
+            CinemachineVirtualCamera aimCamera = _cameraFactory.CreateAimCam();
+            aimCamera.gameObject.SetActive(false);
+        }
+
+        private void CreatePlayer()
+        {
+            Vector3 initialPoint = GameObject.FindGameObjectWithTag(InitialPointTag).transform.position;
+            _playerFactory.CreatePlayer(initialPoint);
         }
 
         private void Reload()
