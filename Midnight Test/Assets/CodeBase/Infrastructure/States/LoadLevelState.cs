@@ -52,6 +52,9 @@ namespace Infrastructure.States
 
         private void OnLoaded()
         {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            
             CreatePlayer();
             CreateCameras();
 

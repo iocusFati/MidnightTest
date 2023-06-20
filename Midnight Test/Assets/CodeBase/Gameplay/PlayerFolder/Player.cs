@@ -14,17 +14,20 @@ namespace CodeBase.Gameplay.PlayerFolder
         
         private PlayerMovement _playerMovement;
         private PlayerAiming _playerAiming;
+        private PlayerRotation _playerRotation;
 
         public void Construct(
-            ITicker ticker, 
-            IInputService inputService, 
+            IInputService inputService,
             IStaticDataService staticData,
-            IGameFactory gameFactory)
+            IGameFactory gameFactory,
+            ICamerasHolder camerasSetter, 
+            ITicker ticker)
         {
             CharacterController characterController = GetComponent<CharacterController>();
 
-            _playerMovement = new PlayerMovement(inputService, this, staticData.PlayerData, characterController, ticker);
-            _playerAiming = new PlayerAiming(inputService, gameFactory.CameraFactory);
+            _playerMovement = new PlayerMovement(inputService, this, staticData.PlayerData, characterController, ticker, camerasSetter);
+            _playerRotation = new PlayerRotation(this, inputService, staticData.PlayerData, ticker);
+            _playerAiming = new PlayerAiming(inputService, gameFactory.CameraFactory, camerasSetter);
         }
     }
 }

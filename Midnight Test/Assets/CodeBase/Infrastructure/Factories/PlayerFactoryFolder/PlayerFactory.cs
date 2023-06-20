@@ -15,27 +15,29 @@ namespace Infrastructure.Factories.PlayerFactoryFolder
         private readonly IInputService _inputService;
         private readonly IStaticDataService _staticData;
         private readonly IGameFactory _gameFactory;
+        private readonly ICamerasHolder _camerasSetter;
 
         public event Action<Player> OnPlayerCreated;
 
-        public PlayerFactory(
-            IAssets assets, 
-            IInputService inputService, 
-            IStaticDataService staticData, 
-            ITicker ticker, 
-            IGameFactory gameFactory)
+        public PlayerFactory(IAssets assets,
+            IInputService inputService,
+            IStaticDataService staticData,
+            ITicker ticker,
+            IGameFactory gameFactory, 
+            ICamerasHolder camerasSetter)
         {
             _assets = assets;
             _inputService = inputService;
             _staticData = staticData;
             _ticker = ticker;
             _gameFactory = gameFactory;
+            _camerasSetter = camerasSetter;
         }
 
         public void CreatePlayer(Vector3 at)
         {
             Player player = _assets.Instantiate<Player>(AssetPaths.PlayerPath, at);
-            player.Construct(_ticker, _inputService, _staticData, _gameFactory);
+            player.Construct(_inputService, _staticData, _gameFactory, _camerasSetter, _ticker);
             
             OnPlayerCreated.Invoke(player);
         }

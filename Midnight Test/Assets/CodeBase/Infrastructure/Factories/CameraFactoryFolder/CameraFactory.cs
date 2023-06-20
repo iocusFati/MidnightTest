@@ -3,21 +3,24 @@ using Cinemachine;
 using CodeBase.Gameplay.PlayerFolder;
 using Infrastructure.AssetProviderService;
 using Infrastructure.Factories.PlayerFactoryFolder;
+using UnityEngine;
 
 namespace Infrastructure.Factories.CameraFactoryFolder
 {
     public class CameraFactory : ICameraFactory
     {
         private readonly IAssets _assets;
-        
+        private readonly ICamerasSetter _camerasSetter;
+
         private Player _player;
 
         public event Action<CinemachineVirtualCamera> OnMainCameraCreated;
         public event Action<CinemachineVirtualCamera> OnAimCameraCreated;
 
-        public CameraFactory(IAssets assets, IPlayerFactory playerFactory)
+        public CameraFactory(IAssets assets, IPlayerFactory playerFactory, ICamerasSetter camerasSetter)
         {
             _assets = assets;
+            _camerasSetter = camerasSetter;
 
             playerFactory.OnPlayerCreated += player => _player = player;
         }
@@ -28,6 +31,7 @@ namespace Infrastructure.Factories.CameraFactoryFolder
             camera.Follow = _player.CameraFollow;
             
             OnMainCameraCreated?.Invoke(camera);
+            _camerasSetter.SetMainCamera(camera);
 
             return camera;
         }
@@ -37,7 +41,8 @@ namespace Infrastructure.Factories.CameraFactoryFolder
             CinemachineVirtualCamera camera = _assets.Instantiate<CinemachineVirtualCamera>(AssetPaths.AimCamera);
             camera.Follow = _player.CameraFollow;
             
-            OnAimCameraCreated.Invoke(camera);        
+            OnAimCameraCreated.Invoke(camera);
+            _camerasSetter.SetAimCamera(camera);
 
             return camera;
         }

@@ -30,5 +30,8 @@ namespace Infrastructure.Services.Input
 
         public bool Run() => 
             _playerActions.Run.inProgress;
+
+        public Vector2 GetMouseDelta() => 
+            _playerActions.Look.ReadValue<Vector2>();
     }
 }

@@ -10,5 +10,6 @@ namespace Infrastructure.Services.Input
         bool Jump();
         bool Run();
         event Action OnRepositionCrosshairs;
+        Vector2 GetMouseDelta();
     }
 }

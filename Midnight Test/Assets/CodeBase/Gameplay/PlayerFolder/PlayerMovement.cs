@@ -9,6 +9,8 @@ namespace CodeBase.Gameplay.PlayerFolder
     {
         private readonly IInputService _inputService;
         private readonly CharacterController _controller;
+        private ICamerasHolder _camerasHolder;
+        private Player _player;
         private readonly Transform _playerTransform;
 
         private readonly float _gravityValue;
@@ -28,12 +30,15 @@ namespace CodeBase.Gameplay.PlayerFolder
             IInputService inputService,
             Player player,
             PlayerStaticData playerData,
-            CharacterController controller, 
-            ITicker ticker)
+            CharacterController controller,
+            ITicker ticker, 
+            ICamerasHolder camerasHolder)
         {
             _inputService = inputService;
+            _player = player;
             _playerTransform = player.transform;
             _controller = controller;
+            _camerasHolder = camerasHolder;
 
             _speed =  _baseSpeed = playerData.BaseSpeed;
             _accelerationSpeed = playerData.AccelerationSpeed;
@@ -79,8 +84,11 @@ namespace CodeBase.Gameplay.PlayerFolder
         private Vector3 GetMoveDirection()
         {
             Vector2 inputMoveDir = _inputService.GetDirection();
+            Vector3 moveDir = new Vector3(inputMoveDir.x, 0, inputMoveDir.y);
 
-            return new Vector3(inputMoveDir.x, 0, inputMoveDir.y);
+            Transform cameraFollow = _player.CameraFollow;
+            
+            return moveDir.x * cameraFollow.right + moveDir.z * cameraFollow.forward.normalized;
         }
 
         private void AddGravity()
@@ -105,10 +113,7 @@ namespace CodeBase.Gameplay.PlayerFolder
             return Physics.CheckSphere(spherePos, _controller.radius, _groundLayerMask);
         }
 
-        private void Jump()
-        {
-            Debug.Log("Jump");
+        private void Jump() => 
             _playerVelocity.y += Mathf.Sqrt(_jumpHeight * -3.0f * _gravityValue);
-        }
     }
 }
