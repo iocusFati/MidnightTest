@@ -21,5 +21,13 @@ namespace Infrastructure.StaticData
         [SerializeField] public float VerticalLowLimitRotation;
         [SerializeField] public float VerticalHighLimitRotation;
         [SerializeField] public float VerticalRotationPower;
+        
+        [Header("Animation")]
+        [SerializeField] public float AnimationSmoothTime;
+        [SerializeField] public float AimRifleAnimationDuration;
+        [SerializeField] public Vector3 RifleAimPosition;
+        [SerializeField] public Vector3 RifleAimRotation;
+        [SerializeField] public Vector3 RifleIdlePosition;
+        [SerializeField] public Vector3 RifleIdleRotation;
     }
 }

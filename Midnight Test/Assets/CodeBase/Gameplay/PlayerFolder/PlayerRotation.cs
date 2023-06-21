@@ -37,7 +37,7 @@ namespace CodeBase.Gameplay.PlayerFolder
             Vector2 mouseDelta = _inputService.GetMouseDelta();
 
             SetHorizontalRotation(mouseDelta);
-            SetVerticalRotation(mouseDelta);
+            // SetVerticalRotation(mouseDelta);
         }
 
         private void SetVerticalRotation(Vector2 mouseDelta)
@@ -46,7 +46,6 @@ namespace CodeBase.Gameplay.PlayerFolder
 
             Vector3 angles = _playerTransform.rotation.eulerAngles;
             angles.z = 0;
-            Debug.Log(angles.x);
 
             if (angles.x > _verticalLowLimitRotation && angles.x < 180)
                 angles.x = _verticalLowLimitRotation;

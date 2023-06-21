@@ -16,6 +16,7 @@ namespace Infrastructure.Factories.PlayerFactoryFolder
         private readonly IStaticDataService _staticData;
         private readonly IGameFactory _gameFactory;
         private readonly ICamerasHolder _camerasSetter;
+        private ICoroutineRunner _coroutineRunner;
 
         public event Action<Player> OnPlayerCreated;
 
@@ -23,8 +24,9 @@ namespace Infrastructure.Factories.PlayerFactoryFolder
             IInputService inputService,
             IStaticDataService staticData,
             ITicker ticker,
-            IGameFactory gameFactory, 
-            ICamerasHolder camerasSetter)
+            IGameFactory gameFactory,
+            ICamerasHolder camerasSetter, 
+            ICoroutineRunner coroutineRunner)
         {
             _assets = assets;
             _inputService = inputService;
@@ -32,12 +34,13 @@ namespace Infrastructure.Factories.PlayerFactoryFolder
             _ticker = ticker;
             _gameFactory = gameFactory;
             _camerasSetter = camerasSetter;
+            _coroutineRunner = coroutineRunner;
         }
 
         public void CreatePlayer(Vector3 at)
         {
             Player player = _assets.Instantiate<Player>(AssetPaths.PlayerPath, at);
-            player.Construct(_inputService, _staticData, _gameFactory, _camerasSetter, _ticker);
+            player.Construct(_inputService, _staticData, _gameFactory, _camerasSetter, _ticker, _coroutineRunner);
             
             OnPlayerCreated.Invoke(player);
         }

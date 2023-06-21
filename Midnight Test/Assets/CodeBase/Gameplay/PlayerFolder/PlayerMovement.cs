@@ -1,3 +1,4 @@
+using CodeBase.Gameplay.PlayerFolder.Animation;
 using Infrastructure;
 using Infrastructure.Services.Input;
 using Infrastructure.StaticData;
@@ -9,9 +10,10 @@ namespace CodeBase.Gameplay.PlayerFolder
     {
         private readonly IInputService _inputService;
         private readonly CharacterController _controller;
-        private ICamerasHolder _camerasHolder;
-        private Player _player;
+        private readonly Player _player;
+        private readonly PlayerAnimation _playerAnimation;
         private readonly Transform _playerTransform;
+        private ICamerasHolder _camerasHolder;
 
         private readonly float _gravityValue;
         private readonly float _baseSpeed;
@@ -19,16 +21,21 @@ namespace CodeBase.Gameplay.PlayerFolder
         private readonly float _jumpHeight;
         private readonly float _groundOffset;
         private readonly float _drag;
+        private float _animationSmoothTime;
 
         private float _speed;
         private Vector3 _playerVelocity;
         private Vector3 _moveDirection;
+        private Vector2 _animationVelocity;
+        private Vector2 _currentAnimationBlend;
+
 
         private readonly int _groundLayerMask = 1 << LayerMask.NameToLayer("Ground");
 
         public PlayerMovement(
             IInputService inputService,
             Player player,
+            PlayerAnimation playerAnimation,
             PlayerStaticData playerData,
             CharacterController controller,
             ITicker ticker, 
@@ -37,6 +44,7 @@ namespace CodeBase.Gameplay.PlayerFolder
             _inputService = inputService;
             _player = player;
             _playerTransform = player.transform;
+            _playerAnimation = playerAnimation;
             _controller = controller;
             _camerasHolder = camerasHolder;
 
@@ -46,8 +54,11 @@ namespace CodeBase.Gameplay.PlayerFolder
             _groundOffset = playerData.GroundOffset;
             _gravityValue = playerData.GravityValue;
             _drag = playerData.Drag;
+            _animationSmoothTime = playerData.AnimationSmoothTime;
             
             ticker.AddTickable(this);
+
+            _inputService.OnJump += TryJump;
         }
 
         public void Tick()
@@ -58,8 +69,13 @@ namespace CodeBase.Gameplay.PlayerFolder
 
         private void Move()
         {
-            Vector3 direction =  GetMoveDirection();
+            Vector2 inputMoveDir = _inputService.GetDirection();
             
+            _currentAnimationBlend = Vector2.SmoothDamp(
+                _currentAnimationBlend, inputMoveDir, ref _animationVelocity, _animationSmoothTime);
+            
+            Vector3 direction =  GetMoveDirection(_currentAnimationBlend);
+
             if (direction == Vector3.zero && !IsGrounded())
             {
                 DragPlayer();
@@ -71,6 +87,7 @@ namespace CodeBase.Gameplay.PlayerFolder
             }
             
             _controller.Move(_moveDirection * (_speed * Time.deltaTime));
+            _playerAnimation.SetMovementAnimation(_currentAnimationBlend);
         }
 
         private float FindSpeed() =>
@@ -81,11 +98,9 @@ namespace CodeBase.Gameplay.PlayerFolder
         private void DragPlayer() => 
             _moveDirection -= _moveDirection * _drag;
 
-        private Vector3 GetMoveDirection()
+        private Vector3 GetMoveDirection(Vector2 inputMoveDir)
         {
-            Vector2 inputMoveDir = _inputService.GetDirection();
             Vector3 moveDir = new Vector3(inputMoveDir.x, 0, inputMoveDir.y);
-
             Transform cameraFollow = _player.CameraFollow;
             
             return moveDir.x * cameraFollow.right + moveDir.z * cameraFollow.forward.normalized;
@@ -93,14 +108,9 @@ namespace CodeBase.Gameplay.PlayerFolder
 
         private void AddGravity()
         {
-            bool playerIsGrounded = IsGrounded();
-            
-            if (playerIsGrounded && _playerVelocity.y < 0) 
+            if (IsGrounded() && _playerVelocity.y < 0) 
                 _playerVelocity.y = 0f;
             
-            if (_inputService.Jump() && playerIsGrounded) 
-                Jump();
-
             _playerVelocity.y += _gravityValue * Time.deltaTime;
             _controller.Move(_playerVelocity * Time.deltaTime);
         }
@@ -113,7 +123,11 @@ namespace CodeBase.Gameplay.PlayerFolder
             return Physics.CheckSphere(spherePos, _controller.radius, _groundLayerMask);
         }
 
-        private void Jump() => 
-            _playerVelocity.y += Mathf.Sqrt(_jumpHeight * -3.0f * _gravityValue);
+        private void TryJump()
+        {
+            Debug.Log("Jump");
+            if (IsGrounded())
+                _playerVelocity.y += Mathf.Sqrt(_jumpHeight * -3.0f * _gravityValue);
+        }
     }
 }

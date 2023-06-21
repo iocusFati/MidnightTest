@@ -64,7 +64,7 @@ namespace Infrastructure.States
                 new CamerasHolder());
             
             GameFactory gameFactory = (GameFactory)services.RegisterService<IGameFactory>(
-                new GameFactory(assets, inputService, staticData, camerasSetter, _ticker));
+                new GameFactory(assets, inputService, staticData, camerasSetter, _ticker, _coroutineRunner));
             gameFactory.Initialize();
             
             var persistentProgress = services.RegisterService<IPersistentProgressService>(

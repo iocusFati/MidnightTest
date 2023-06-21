@@ -5,11 +5,11 @@ namespace Infrastructure.Services.Input
 {
     public interface IInputService : IService
     {
+        event Action OnJump;
         event Action OnAim;
-        Vector2 GetDirection();
-        bool Jump();
-        bool Run();
         event Action OnRepositionCrosshairs;
+        bool Run();
+        Vector2 GetDirection();
         Vector2 GetMouseDelta();
     }
 }
