@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Infrastructure.Services.SaveLoad
+namespace CodeBase.Infrastructure.Services.SaveLoad
 {
     public class OnExitSave : MonoBehaviour
     {

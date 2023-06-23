@@ -1,7 +1,8 @@
+using CodeBase.Gameplay.CameraFolder;
 using CodeBase.Gameplay.PlayerFolder.Animation;
-using Infrastructure;
-using Infrastructure.Services.Input;
-using Infrastructure.StaticData;
+using CodeBase.Infrastructure;
+using CodeBase.Infrastructure.Services.Input;
+using CodeBase.Infrastructure.StaticData;
 using UnityEngine;
 
 namespace CodeBase.Gameplay.PlayerFolder

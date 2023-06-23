@@ -1,4 +1,4 @@
-namespace CodeBase.Gameplay.PlayerFolder.Shooting
+namespace CodeBase.Gameplay.CameraFolder
 {
     public enum Cameras
     {

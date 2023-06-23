@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Infrastructure
+namespace CodeBase.Infrastructure
 {
     public class Ticker : MonoBehaviour, ITicker
     {
@@ -13,9 +13,10 @@ namespace Infrastructure
                 tickable.Tick();
         }
         
-        public void AddTickable(ITickable tickable)
-        {
+        public void AddTickable(ITickable tickable) => 
             _tickables.Add(tickable);
-        }
+
+        public void RemoveTickable(ITickable playerAiming) => 
+            _tickables.Remove(playerAiming);
     }
 }

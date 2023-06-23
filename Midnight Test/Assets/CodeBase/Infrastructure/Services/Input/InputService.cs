@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Infrastructure.Services.Input
+namespace CodeBase.Infrastructure.Services.Input
 {
     public class InputService : IInputService
     {
@@ -11,6 +11,7 @@ namespace Infrastructure.Services.Input
         public event Action OnJump;
         public event Action OnAim;
         public event Action OnRepositionCrosshairs;
+        public event Action OnShoot;
 
         public InputService()
         {
@@ -19,6 +20,7 @@ namespace Infrastructure.Services.Input
             
             _playerActions = _playerControls.Player;
 
+            _playerActions.Shoot.performed += _ => OnShoot?.Invoke();
             _playerActions.Jump.performed += _ => OnJump?.Invoke(); 
             _playerActions.Aim.performed += _ => OnAim?.Invoke();
             _playerActions.Aim.canceled += _ => OnRepositionCrosshairs?.Invoke();

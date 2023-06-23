@@ -2,7 +2,7 @@ using System;
 using CodeBase.Gameplay.PlayerFolder;
 using UnityEngine;
 
-namespace Infrastructure.Factories.PlayerFactoryFolder
+namespace CodeBase.Infrastructure.Factories.PlayerFactoryFolder
 {
     public interface IPlayerFactory
     {

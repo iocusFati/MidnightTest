@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using Infrastructure.Factories.GameFactoryFolder;
-using Infrastructure.Services;
-using Infrastructure.Services.Input;
-using Infrastructure.Services.PersistentProgress;
-using Infrastructure.Services.SaveLoad;
-using Infrastructure.Services.StaticDataService;
+using CodeBase.Infrastructure.Factories.GameFactoryFolder;
+using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.Services.Input;
+using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Infrastructure.Services.SaveLoad;
+using CodeBase.Infrastructure.States.Interfaces;
 
-namespace Infrastructure.States
+namespace CodeBase.Infrastructure.States
 {
     public class GameStateMachine : IGameStateMachine
     {

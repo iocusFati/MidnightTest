@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Infrastructure.Data;
-using Infrastructure.Services.PersistentProgress;
-using UI.Entities;
+using CodeBase.Infrastructure.Data;
+using CodeBase.Infrastructure.Services.PersistentProgress;
 using UnityEngine;
 
-namespace Infrastructure.Services.SaveLoad
+namespace CodeBase.Infrastructure.Services.SaveLoad
 {
     public class SaveLoadService : ISaveLoadService
     {

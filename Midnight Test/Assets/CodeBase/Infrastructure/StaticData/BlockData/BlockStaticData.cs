@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Infrastructure.Data
+namespace CodeBase.Infrastructure.StaticData.BlockData
 {
     [CreateAssetMenu(fileName = "BlockData", menuName = "StaticData/BlockData")]
     public class BlockStaticData : ScriptableObject

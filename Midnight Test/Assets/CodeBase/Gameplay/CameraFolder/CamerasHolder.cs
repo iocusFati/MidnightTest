@@ -1,8 +1,7 @@
 using System;
 using Cinemachine;
-using CodeBase.Gameplay.PlayerFolder.Shooting;
 
-namespace UnityEngine
+namespace CodeBase.Gameplay.CameraFolder
 {
     public class CamerasHolder : ICamerasSetter
     {

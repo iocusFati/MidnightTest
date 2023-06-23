@@ -1,12 +1,14 @@
 using Cinemachine;
-using Infrastructure.Factories.CameraFactoryFolder;
-using Infrastructure.Factories.GameFactoryFolder;
-using Infrastructure.Factories.PlayerFactoryFolder;
-using Infrastructure.Services.SaveLoad;
+using CodeBase.Infrastructure.Factories.CameraFactoryFolder;
+using CodeBase.Infrastructure.Factories.GameFactoryFolder;
+using CodeBase.Infrastructure.Factories.PlayerFactoryFolder;
+using CodeBase.Infrastructure.Services.SaveLoad;
+using CodeBase.Infrastructure.States.Interfaces;
+using CodeBase.UI.Factory;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Infrastructure.States
+namespace CodeBase.Infrastructure.States
 {
     public class LoadLevelState : IPayloadedState<string>
     {
@@ -16,6 +18,7 @@ namespace Infrastructure.States
         private readonly IGameStateMachine _gameStateMachine;
         private readonly IPlayerFactory _playerFactory;
         private readonly ICameraFactory _cameraFactory;
+        private IUIFactory _uiFactory;
         private readonly SceneLoader _sceneLoader;
 
         private Vector3 _initialPoint;
@@ -32,6 +35,7 @@ namespace Infrastructure.States
 
             _playerFactory = gameFactory.PlayerFactory;
             _cameraFactory = gameFactory.CameraFactory;
+            _uiFactory = gameFactory.UIFactory;
         }
         public void Enter(string sceneName)
         {
@@ -54,6 +58,8 @@ namespace Infrastructure.States
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            _uiFactory.CreateHUD();
             
             CreatePlayer();
             CreateCameras();

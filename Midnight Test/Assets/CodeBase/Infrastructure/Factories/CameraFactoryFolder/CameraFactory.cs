@@ -1,11 +1,11 @@
 using System;
 using Cinemachine;
+using CodeBase.Gameplay.CameraFolder;
 using CodeBase.Gameplay.PlayerFolder;
-using Infrastructure.AssetProviderService;
-using Infrastructure.Factories.PlayerFactoryFolder;
-using UnityEngine;
+using CodeBase.Infrastructure.Factories.PlayerFactoryFolder;
+using CodeBase.Infrastructure.Services.AssetProviderService;
 
-namespace Infrastructure.Factories.CameraFactoryFolder
+namespace CodeBase.Infrastructure.Factories.CameraFactoryFolder
 {
     public class CameraFactory : ICameraFactory
     {

@@ -1,7 +1,10 @@
-namespace Infrastructure
+using CodeBase.Gameplay.PlayerFolder.Shooting;
+
+namespace CodeBase.Infrastructure
 {
     public interface ITicker
     {
-        public void AddTickable(ITickable tickable);
+        void AddTickable(ITickable tickable);
+        void RemoveTickable(ITickable playerAiming);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Infrastructure.Data.CameraData
+namespace CodeBase.Infrastructure.StaticData.CameraData
 {
     [CreateAssetMenu(fileName = "CameraData", menuName = "StaticData/CameraData")]
     public class CameraStaticData : ScriptableObject

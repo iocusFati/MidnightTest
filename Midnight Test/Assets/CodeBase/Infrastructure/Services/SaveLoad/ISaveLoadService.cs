@@ -1,7 +1,7 @@
-﻿using Infrastructure.Data;
-using UI.Entities;
+﻿using CodeBase.Infrastructure.Data;
+using CodeBase.Infrastructure.Services.PersistentProgress;
 
-namespace Infrastructure.Services.SaveLoad
+namespace CodeBase.Infrastructure.Services.SaveLoad
 {
     public interface ISaveLoadService : IService
     {

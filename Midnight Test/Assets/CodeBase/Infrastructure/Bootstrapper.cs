@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
-using Infrastructure.Services;
-using Infrastructure.States;
+using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.States;
 using UnityEngine;
 
-namespace Infrastructure
+namespace CodeBase.Infrastructure
 {
     public class Bootstrapper : Ticker, ICoroutineRunner
     {

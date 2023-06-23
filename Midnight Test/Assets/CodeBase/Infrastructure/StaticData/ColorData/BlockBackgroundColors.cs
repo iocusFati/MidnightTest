@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Serialization;
 using Color = UnityEngine.Color;
 
-namespace Infrastructure.Data
+namespace CodeBase.Infrastructure.StaticData.ColorData
 {
     [Serializable]
     public class BlockBackgroundColors

@@ -1,7 +1,7 @@
 using System;
 using Cinemachine;
 
-namespace Infrastructure.Factories.CameraFactoryFolder
+namespace CodeBase.Infrastructure.Factories.CameraFactoryFolder
 {
     public interface ICameraFactory
     {

@@ -1,7 +1,6 @@
-using System;
-using Infrastructure;
-using Infrastructure.Services.Input;
-using Infrastructure.StaticData;
+using CodeBase.Infrastructure;
+using CodeBase.Infrastructure.Services.Input;
+using CodeBase.Infrastructure.StaticData;
 using UnityEngine;
 
 namespace CodeBase.Gameplay.PlayerFolder.Animation
@@ -17,6 +16,9 @@ namespace CodeBase.Gameplay.PlayerFolder.Animation
         private readonly int _moveYId;
         private readonly int _runId;
         private readonly int _aimId;
+        private readonly int _shootId;
+        
+        public bool IsAiming { get; private set; }
 
         public PlayerAnimation(
             Player player, 
@@ -33,6 +35,7 @@ namespace CodeBase.Gameplay.PlayerFolder.Animation
             _moveYId = Animator.StringToHash("MoveY");
             _runId = Animator.StringToHash("Run");
             _aimId = Animator.StringToHash("IsAiming");
+            _shootId = Animator.StringToHash("Shoot");
 
             _playerAimAnimation = new PlayerAimAnimation(player, playerData, coroutineRunner);
 
@@ -43,30 +46,42 @@ namespace CodeBase.Gameplay.PlayerFolder.Animation
 
         public void SetMovementAnimation(Vector2 value)
         {
-            if (_inputService.Run()) 
-                _animator.SetBool(_runId, true);
-            else
-                _animator.SetBool(_runId, false);
+            _animator.SetBool(_runId, _inputService.Run());
 
             _animator.SetFloat(_moveXId, value.x);
             _animator.SetFloat(_moveYId, value.y);
         }
 
-        private void Jump()
+        public void Shoot()
         {
-            _animator.SetTrigger(_jumpId);
+            _animator.SetTrigger(_shootId);
         }
+
+        private void Jump() => 
+            _animator.SetTrigger(_jumpId);
 
         private void Aim()
         {
             _playerAimAnimation.ToAim();
+            IsAiming = true;
             // _animator.SetBool(_aimId, true);
         }
 
         private void ToIdle()
         {
             _playerAimAnimation.ToIdle();
+            IsAiming = false;
             _animator.SetBool(_aimId, false);
         }
+    }
+
+    public enum AnimationStates
+    {
+        None = 0,
+        Walk = 1,
+        Run = 2,
+        Shoot = 3,
+        Jump = 4,
+        Aim = 5
     }
 }

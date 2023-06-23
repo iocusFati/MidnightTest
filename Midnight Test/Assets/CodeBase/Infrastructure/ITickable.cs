@@ -1,4 +1,4 @@
-namespace Infrastructure
+namespace CodeBase.Infrastructure
 {
     public interface ITickable
     {

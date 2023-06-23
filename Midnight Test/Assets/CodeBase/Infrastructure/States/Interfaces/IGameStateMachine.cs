@@ -1,4 +1,4 @@
-namespace Infrastructure.States
+namespace CodeBase.Infrastructure.States.Interfaces
 {
     public interface IGameStateMachine
     {

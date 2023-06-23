@@ -1,13 +1,16 @@
-using Infrastructure.AssetProviderService;
-using Infrastructure.Factories.GameFactoryFolder;
-using Infrastructure.Services;
-using Infrastructure.Services.Input;
-using Infrastructure.Services.PersistentProgress;
-using Infrastructure.Services.SaveLoad;
-using Infrastructure.Services.StaticDataService;
-using UnityEngine;
+using CodeBase.Gameplay.CameraFolder;
+using CodeBase.Infrastructure.Factories.GameFactoryFolder;
+using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.Services.AssetProviderService;
+using CodeBase.Infrastructure.Services.Input;
+using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Infrastructure.Services.PoolsService;
+using CodeBase.Infrastructure.Services.SaveLoad;
+using CodeBase.Infrastructure.Services.StaticDataService;
+using CodeBase.Infrastructure.States.Interfaces;
+using CodeBase.UI.Factory;
 
-namespace Infrastructure.States
+namespace CodeBase.Infrastructure.States
 {
     public class BootstrapState : IState
     {
@@ -59,18 +62,24 @@ namespace Infrastructure.States
             var inputService = services.RegisterService<IInputService>(
                 new InputService());
 
-
             var camerasSetter = services.RegisterService<ICamerasSetter>(
                 new CamerasHolder());
             
-            GameFactory gameFactory = (GameFactory)services.RegisterService<IGameFactory>(
-                new GameFactory(assets, inputService, staticData, camerasSetter, _ticker, _coroutineRunner));
-            gameFactory.Initialize();
-            
             var persistentProgress = services.RegisterService<IPersistentProgressService>(
                 new PersistentProgressService());
-            var saveLoad = services.RegisterService <ISaveLoadService>(
+            var saveLoad = services.RegisterService<ISaveLoadService>(
                 new SaveLoadService(persistentProgress));
+
+            PoolsHolderService poolsHolder = (PoolsHolderService)services.RegisterService<IPoolsHolderService>(
+                new PoolsHolderService());
+            poolsHolder.Initialize();
+            
+            UIHolder uiHolder = (UIHolder)services.RegisterService<IUIHolder>(
+                new UIHolder());
+            GameFactory gameFactory = (GameFactory)services.RegisterService<IGameFactory>(
+                new GameFactory(assets, inputService, staticData, camerasSetter, 
+                    saveLoad, uiHolder, poolsHolder, _ticker, _coroutineRunner));
+            gameFactory.Initialize();
         }
 
         private IStaticDataService RegisterStaticDataService(AllServices services)

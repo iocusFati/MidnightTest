@@ -1,7 +1,6 @@
-using Infrastructure.Services;
 using UnityEngine;
 
-namespace Infrastructure.AssetProviderService
+namespace CodeBase.Infrastructure.Services.AssetProviderService
 {
     public interface IAssets : IService
     {

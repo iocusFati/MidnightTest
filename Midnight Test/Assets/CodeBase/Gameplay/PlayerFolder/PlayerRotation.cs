@@ -1,6 +1,6 @@
-using Infrastructure;
-using Infrastructure.Services.Input;
-using Infrastructure.StaticData;
+using CodeBase.Infrastructure;
+using CodeBase.Infrastructure.Services.Input;
+using CodeBase.Infrastructure.StaticData;
 using UnityEngine;
 
 namespace CodeBase.Gameplay.PlayerFolder
@@ -9,6 +9,7 @@ namespace CodeBase.Gameplay.PlayerFolder
     {
         private readonly IInputService _inputService;
         private readonly Transform _playerTransform;
+        private readonly Player _player;
 
         private readonly float _rotationPower;
         private readonly float _verticalRotationPower;
@@ -21,6 +22,7 @@ namespace CodeBase.Gameplay.PlayerFolder
             PlayerStaticData playerData, 
             ITicker ticker)
         {
+            _player = player;
             _playerTransform = player.transform;
             _inputService = inputService;
 
@@ -37,27 +39,41 @@ namespace CodeBase.Gameplay.PlayerFolder
             Vector2 mouseDelta = _inputService.GetMouseDelta();
 
             SetHorizontalRotation(mouseDelta);
-            // SetVerticalRotation(mouseDelta);
+            SetVerticalRotation(mouseDelta);
         }
 
         private void SetVerticalRotation(Vector2 mouseDelta)
         {
-            _playerTransform.rotation *= Quaternion.AngleAxis(-mouseDelta.y * _verticalRotationPower, Vector3.right);
+            Transform bodyTarget = _player.BodyTargetIK;
+            Vector3 bodyTargetOldRotation = bodyTarget.rotation.eulerAngles;
+            Vector3 addRotation = Quaternion.AngleAxis(-mouseDelta.y * _verticalRotationPower, Vector3.right).eulerAngles;
+            
+            // bodyTarget.rotation *= addRotation;
+            if (bodyTargetOldRotation.x > 180)
+            {
+                bodyTargetOldRotation.x = -(360 - bodyTargetOldRotation.x);
+            }
+            
+            var newRotation = bodyTargetOldRotation.x - mouseDelta.y;
 
-            Vector3 angles = _playerTransform.rotation.eulerAngles;
-            angles.z = 0;
 
-            if (angles.x > _verticalLowLimitRotation && angles.x < 180)
-                angles.x = _verticalLowLimitRotation;
-            else if (angles.x < _verticalHighLimitRotation && angles.x > 180) 
-                angles.x = _verticalHighLimitRotation;
+            if (newRotation < _verticalLowLimitRotation)
+                newRotation = _verticalLowLimitRotation;
+            else if (newRotation > _verticalHighLimitRotation) 
+                newRotation = _verticalHighLimitRotation;
 
-            _playerTransform.rotation = Quaternion.Euler(angles);
+            SetRotationToBodyTarget();
+            bodyTarget.rotation = Quaternion.Euler(newRotation, bodyTargetOldRotation.y, bodyTargetOldRotation.z);
+
+            void SetRotationToBodyTarget()
+            {
+                float deltaRotation = bodyTargetOldRotation.x - newRotation;
+                Vector3 cameraFollowRotation = _player.CameraFollow.rotation.eulerAngles;
+                _player.CameraFollow.rotation = Quaternion.Euler(cameraFollowRotation.x - deltaRotation, cameraFollowRotation.y, cameraFollowRotation.z);
+            }
         }
 
-        private void SetHorizontalRotation(Vector2 mouseDelta)
-        {
+        private void SetHorizontalRotation(Vector2 mouseDelta) => 
             _playerTransform.rotation *= Quaternion.AngleAxis(mouseDelta.x * _rotationPower, Vector3.up);
-        }
     }
 }

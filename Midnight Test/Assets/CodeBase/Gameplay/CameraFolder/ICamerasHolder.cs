@@ -1,8 +1,6 @@
 using Cinemachine;
-using CodeBase.Gameplay.PlayerFolder.Shooting;
-using Infrastructure.Services;
 
-namespace UnityEngine
+namespace CodeBase.Gameplay.CameraFolder
 {
     public interface ICamerasHolder
     {

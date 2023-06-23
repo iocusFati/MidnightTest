@@ -19,12 +19,12 @@ MonoBehaviour:
   GravityValue: -70
   Drag: 0.01
   RotationPower: 0.5
-  VerticalLowLimitRotation: 7
-  VerticalHighLimitRotation: 340
-  VerticalRotationPower: 0.08
+  VerticalRotationPower: 0.00005
+  VerticalLowLimitRotation: -20
+  VerticalHighLimitRotation: 30
   AnimationSmoothTime: 0.1
-  AimRifleAnimationDuration: 0.6
-  RifleAimPosition: {x: 0.056980766, y: 0.86907685, z: 0.787317}
+  AimRifleAnimationDuration: 1
+  RifleAimPosition: {x: -0.011686776, y: 0.17647469, z: 0.7171181}
   RifleAimRotation: {x: 353.58395, y: 344.02448, z: 355.1727}
-  RifleIdlePosition: {x: 0.0030000855, y: 0.59050566, z: 0.66300046}
+  RifleIdlePosition: {x: 0.0030000855, y: -0.026000343, z: 0.66300046}
   RifleIdleRotation: {x: 21.806067, y: 285.12494, z: 8.83801}

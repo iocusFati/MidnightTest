@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Infrastructure.AssetProviderService
+namespace CodeBase.Infrastructure.Services.AssetProviderService
 {
     public class AssetProvider : IAssets
     {

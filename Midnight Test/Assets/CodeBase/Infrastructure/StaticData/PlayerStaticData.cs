@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace Infrastructure.StaticData
+namespace CodeBase.Infrastructure.StaticData
 {
     [CreateAssetMenu(fileName = "PlayerData", menuName = "StaticData/PlayerData")]
     public class PlayerStaticData : ScriptableObject
@@ -15,13 +14,13 @@ namespace Infrastructure.StaticData
         [SerializeField] public float GroundOffset;
         [SerializeField] public float GravityValue;
         [SerializeField] public float Drag;
-        
+
         [Header("Rotation")]
         [SerializeField] public float RotationPower;
+        [SerializeField] public float VerticalRotationPower;
         [SerializeField] public float VerticalLowLimitRotation;
         [SerializeField] public float VerticalHighLimitRotation;
-        [SerializeField] public float VerticalRotationPower;
-        
+
         [Header("Animation")]
         [SerializeField] public float AnimationSmoothTime;
         [SerializeField] public float AimRifleAnimationDuration;

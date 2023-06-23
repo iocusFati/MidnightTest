@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Infrastructure.Data
+namespace CodeBase.Infrastructure.StaticData.ColorData
 {
     [CreateAssetMenu(fileName = "ColorData", menuName = "StaticData/ColorData")]
     public class ColorStaticData : ScriptableObject

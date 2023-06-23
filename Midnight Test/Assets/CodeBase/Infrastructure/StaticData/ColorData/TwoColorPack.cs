@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Infrastructure.Data
+namespace CodeBase.Infrastructure.StaticData.ColorData
 {
     [Serializable]
     public class TwoColorPack

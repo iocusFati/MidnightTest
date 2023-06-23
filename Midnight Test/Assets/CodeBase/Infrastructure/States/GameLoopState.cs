@@ -1,6 +1,7 @@
-using Infrastructure.Services.Input;
+using CodeBase.Infrastructure.Services.Input;
+using CodeBase.Infrastructure.States.Interfaces;
 
-namespace Infrastructure.States
+namespace CodeBase.Infrastructure.States
 {
     public class GameLoopState : IState
     {

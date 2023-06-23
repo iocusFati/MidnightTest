@@ -1,7 +1,7 @@
 using Cinemachine;
-using Infrastructure.Services;
+using CodeBase.Infrastructure.Services;
 
-namespace UnityEngine
+namespace CodeBase.Gameplay.CameraFolder
 {
     public interface ICamerasSetter : IService, ICamerasHolder
     {
